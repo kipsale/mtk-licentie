@@ -1,0 +1,42 @@
+# Verlengt elke week de licentiecodes in licentie.json.
+# MTK haalt dat bestand elke 6 uur op; een code is standaard 30 dagen geldig,
+# dus een paar gemiste weken zijn geen probleem.
+# Geheim nodig: MTK_LICENTIE_SLEUTEL = de volledige inhoud van prive.pem.
+name: Licentiecodes verlengen
+
+on:
+  schedule:
+    - cron: '17 4 * * 1'      # elke maandag 04:17 UTC
+  workflow_dispatch: {}        # handmatig starten via het tabblad Actions
+
+permissions:
+  contents: write
+
+concurrency:
+  group: verleng
+  cancel-in-progress: false
+
+jobs:
+  verleng:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Codes maken
+        env:
+          MTK_LICENTIE_SLEUTEL: ${{ secrets.MTK_LICENTIE_SLEUTEL }}
+        run: |
+          if [ -z "$MTK_LICENTIE_SLEUTEL" ]; then echo "Geheim MTK_LICENTIE_SLEUTEL ontbreekt"; exit 1; fi
+          node mtk-licentie.js bestand --installaties installaties.json --uit licentie.json
+
+      - name: Vastleggen
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add licentie.json
+          git commit -m "Codes verlengd $(date -u +%F)" || { echo "Geen wijziging"; exit 0; }
+          git push
