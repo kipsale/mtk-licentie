@@ -1,5 +1,5 @@
 # Verlengt elke week de licentiecodes in licentie.json.
-# MTK haalt dat bestand elke 6 uur op; een code is standaard 30 dagen geldig,
+# MTK haalt dat bestand elk uur op; een code is standaard 30 dagen geldig,
 # dus een paar gemiste weken zijn geen probleem.
 # Geheim nodig: MTK_LICENTIE_SLEUTEL = de volledige inhoud van prive.pem.
 name: Licentiecodes verlengen

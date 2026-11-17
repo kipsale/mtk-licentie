@@ -1,6 +1,6 @@
 # mtk-licentie
 
-Ondertekende licentiecodes voor MTK-installaties. MTK haalt `licentie.json` elke 6 uur op
+Ondertekende licentiecodes voor MTK-installaties. MTK haalt `licentie.json` elk uur op
 en controleert de handtekening zelf. Dit bestand mag openbaar zijn: een code werkt alleen op
 de installatie met dat ID en is zonder de geheime sleutel niet te maken of te wijzigen.
 
